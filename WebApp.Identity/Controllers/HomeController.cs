@@ -48,19 +48,18 @@ namespace WebApp.Identity.Controllers
         {
             if (ModelState.IsValid) // se password e confirme password for validado
             {
-                //var user = await _userManager.FindByNameAsync(model.UserName);
+                var user = await _userManager.FindByNameAsync(model.UserName);
 
-                //if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-                //{
-                //    var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+                    await HttpContext.SignInAsync("Identity.Application", principal);
+                    //var signInResult = await _signInManager.PasswordSignInAsync(
+                    //    model.UserName, model.Password, false, false);
 
-                //    await HttpContext.SignInAsync("Identity.Application", principal);
-                var signInResult = await _signInManager.PasswordSignInAsync(
-                    model.UserName, model.Password, false, false);
-
-                if (signInResult.Succeeded) return RedirectToAction("About");
-                
-                
+                    //if (signInResult.Succeeded) 
+                    return RedirectToAction("About");
+                }
                 ModelState.AddModelError("", "Usuario ou senha invalidos");
             }
             return View();
