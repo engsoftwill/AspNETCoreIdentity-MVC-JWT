@@ -1,9 +1,9 @@
-﻿    using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.Identity.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,6 +74,7 @@ namespace WebApp.Identity.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     NomeCompleto = table.Column<string>(nullable: true),
+                    Member = table.Column<string>(nullable: true),
                     OrgId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
