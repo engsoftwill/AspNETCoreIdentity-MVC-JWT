@@ -18,20 +18,19 @@ namespace WebApp.Identity
             using (var connection = GetOpenConnection())
             {
                 await connection.ExecuteAsync(
-                    "insert into Users([Id],"+
-                    "[UserName],"+
+                   "insert into Users([Id]," +
+                    "[UserName]," +
                     "[NormalizedUserName]," +
-                    "[PasswordHash]," +
+                    "[PasswordHash]) " +
                     "Values(@id,@userName,@normalizedUserName,@passwordHash)",
 
-
-                    new
-                    {
-                        id = user.Id,
-                        userName = user.UserName,
-                        normalizedUserName = user.NormalizedUserName,
-                        passwordHash = user.PasswordHash
-                    });
+                   new
+                   {
+                       id = user.Id,
+                       userName = user.UserName,
+                       normalizedUserName = user.NormalizedUserName,
+                       passwordHash = user.PasswordHash
+                   });
             }
             return IdentityResult.Success;
         }

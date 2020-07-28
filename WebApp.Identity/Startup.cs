@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Dapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace WebApp.Identity
 {
@@ -26,9 +29,21 @@ namespace WebApp.Identity
         {
             services.AddControllersWithViews();
 
-            services.AddIdentityCore<MyUser>(options => { });
-            services.AddScoped<IUserStore<MyUser>,MyUserStore>();
 
+            var connectionString = @"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=IdentityCurso;Data Source=DESKTOP-F99HABO\SQLEXPRESS01";
+            var migratrionAssembly = typeof(Startup)
+                .GetTypeInfo().Assembly
+                .GetName().Name;
+            services.AddDbContext<MyUserDbContext>(
+                options => options.UseSqlServer(connectionString,
+                sql => sql.MigrationsAssembly(migratrionAssembly))
+                );
+
+
+            services.AddIdentityCore<MyUser>(options => { });
+            services.AddScoped<IUserStore<MyUser>,
+                UserOnlyStore<MyUser, MyUserDbContext>>();
+        
             services.AddAuthentication("cookies")
                 .AddCookie("cookies", options => options.LoginPath = "/Home/Login");
         }
