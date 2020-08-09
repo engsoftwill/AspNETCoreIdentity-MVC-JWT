@@ -153,4 +153,7 @@ C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\bin\Debug\netcorea
 C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\WebApp.Identity.csproj.CoreCompileInputs.cache
 C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\WebApp.Identity.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\Razor\Views\Home\ForgotPassword.cshtml.g.cs
+C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\Razor\Views\Home\ResetPassword.cshtml.g.cs
+C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_CookieConsentPartial.cshtml.g.cs
 C:\Users\willi\source\repos\Solution.Identity\WebApp.Identity\obj\Debug\netcoreapp3.1\WebApp.Identity.csprojAssemblyReference.cache

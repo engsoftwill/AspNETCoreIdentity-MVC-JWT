@@ -1,0 +1,1 @@
+http://localhost:61904/Home/ResetPassword?token=CfDJ8KW2uEu%2BIdtPi0ohEfrDUrXYdbcWtn9yTZzJcat4CtTboAXhNTr9W55LrWWbgRe6HzqEMcfjMNx%2BXRcR8AAaYma5er8FPNA3yUxk8HISXbHWw7WzZojA5lGnHmknwI07AYfdtR1ZU0EWRvFad1l6skx2e%2FD7Vzvanp3LlEylgU9B7n2Z%2FmH%2FWvDiHIYS9%2BV0a5YjsT49GGkCApgl3T%2F6%2BGeL4I1Y925M5jBaZHHH3ENx&email=madu@madu.com.br
