@@ -52,25 +52,68 @@ namespace WebApp.Identity.Controllers
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
 
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-                {
-
-                    if (!await _userManager.IsEmailConfirmedAsync(user))
+                if (user != null && !await _userManager.IsLockedOutAsync(user))
+                { 
+                    if (!await _userManager.CheckPasswordAsync(user, model.Password))
                     {
-                        ModelState.AddModelError("", "Email não está válido");
-                        return View();
-                    }
-                    var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
-                    await HttpContext.SignInAsync("Identity.Application", principal);
-                    //var signInResult = await _signInManager.PasswordSignInAsync(
-                    //    model.UserName, model.Password, false, false);
+                        if (!await _userManager.IsEmailConfirmedAsync(user))
+                        {
+                            ModelState.AddModelError("", "Email não está válido");
+                            return View();
+                        }
 
-                    //if (signInResult.Succeeded) 
-                    return RedirectToAction("About");
+                        await _userManager.ResetAccessFailedCountAsync(user);
+
+                        if (await _userManager.GetTwoFactorEnabledAsync(user))
+                        {
+                            var validator = await _userManager.GetValidTwoFactorProvidersAsync(user);
+                            if (validator.Contains("Email"))
+                            {
+                                var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                                System.IO.File.WriteAllText("email2sv.txt", token);
+
+                                await HttpContext.SignInAsync(IdentityConstants.TwoFactorUserIdScheme,
+                                    Store2FA(user.Id, "Email"));
+
+                                return RedirectToAction("TwoFactor");
+
+                            }
+                        }
+
+
+
+
+                        var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
+                        await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+                        //var signInResult = await _signInManager.PasswordSignInAsync(
+                        //    model.UserName, model.Password, false, false);
+                        //if (signInResult.Succeeded) 
+                        return RedirectToAction("About");
+                    }
+
+                    
+                    await _userManager.AccessFailedAsync(user);
+
+                    if (await _userManager.IsLockedOutAsync(user))
+                    { 
+                        //email deve ser enviado com sugestao de mudança de senha
+                    }
                 }
                 ModelState.AddModelError("", "Usuario ou senha invalidos");
             }
             return View();
+        }
+
+        public ClaimsPrincipal Store2FA(string userId, string Provider)
+        {
+            var identity = new ClaimsIdentity(new List<Claim>
+            {
+                new Claim("sub", userId),
+                new Claim("amr", provider)
+            }, IdentityConstants.TwoFactorUserIdScheme
+            );
+            return new ClaimsPrincipal(identity)
+
         }
 
         [HttpGet]
@@ -216,10 +259,17 @@ namespace WebApp.Identity.Controllers
             return View();
         }
 
-        
+        [HttpGet]
+        public IActionResult TwoFactor()
+        {
+            return View();
+        }
 
-
-
+        [HttpGet]
+        public async Task<IActionResult> TwoFactor(TwoFactorModel model)
+        {
+            return View();
+        }
 
 
         [HttpGet]
